@@ -14,7 +14,7 @@ const getMongoString = (configService: ConfigService) => {
 	const port = configService.get('MONGO_PORT');
 	const defaultAuthDB = configService.get('MONGO_AUTHDATABASE');
 
-	return `mongodb://${login}:${pass}@${host}:${port}/${defaultAuthDB}`;
+	return `mongodb+srv://${login}:${pass}@${host}/${defaultAuthDB}`;
 };
 
 const getMongoOptions = () => ({

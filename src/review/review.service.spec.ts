@@ -1,18 +1,41 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ReviewService } from './review.service';
+import { getModelToken } from 'kindagoose';
+import { Types } from 'mongoose';
 
 describe('ReviewService', () => {
-  let service: ReviewService;
+	let service: ReviewService;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [ReviewService],
-    }).compile();
+	const exec = { exec: jest.fn() };
+	const reviewRepositoryFactory = () => ({
+		find: () => exec
+	});
 
-    service = module.get<ReviewService>(ReviewService);
-  });
+	beforeEach(async () => {
+		const module: TestingModule = await Test.createTestingModule({
+			providers: [
+				ReviewService,
+				{
+					useFactory: reviewRepositoryFactory,
+					provide: getModelToken('ReviewModel'),
+				}
+			],
+		}).compile();
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
-  });
+		service = module.get<ReviewService>(ReviewService);
+	});
+
+	it('should be defined', () => {
+		expect(service).toBeDefined();
+	});
+
+	it('findByProductId is working', async () => {
+		const id = new Types.ObjectId().toHexString();
+		reviewRepositoryFactory().find().exec.mockReturnValueOnce([{
+			productId: id,
+		}]);
+
+		const response = await service.findByProductId(id);
+		expect(response[0].productId).toEqual(id);
+	});
 });
