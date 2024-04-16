@@ -8,7 +8,7 @@ export enum TopLevelCategoryEnum {
 	Products,
 }
 
-export class HHDate {
+export class HHData {
 	@prop()
 	count: number;
 
@@ -33,10 +33,10 @@ export class TopPageAdvantage {
 export interface TopPageModel extends Base {}
 export class TopPageModel extends TimeStamps {
 	@prop({ enum: TopLevelCategoryEnum })
-	firstLevelCategory: TopLevelCategoryEnum;
+	firstCategory: TopLevelCategoryEnum;
 
 	@prop()
-	secondLevelCategory: string;
+	secondCategory: string;
 
 	@prop({ unique: true })
 	alias: string;
@@ -47,8 +47,8 @@ export class TopPageModel extends TimeStamps {
 	@prop()
 	category: string;
 
-	@prop({ type: () => HHDate })
-	hh?: HHDate;
+	@prop({ type: () => HHData })
+	hh?: HHData;
 
 	@prop({ type: () => [TopPageAdvantage] })
 	advantages: TopPageAdvantage[];
