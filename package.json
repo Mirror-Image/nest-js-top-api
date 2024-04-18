@@ -1,9 +1,9 @@
 {
-  "name": "top-api",
+  "name": "nest-js-top-api",
   "version": "0.0.1",
   "description": "",
-  "author": "",
-  "private": true,
+  "author": "Mirror-Image",
+  "private": false,
   "license": "UNLICENSED",
   "scripts": {
     "build": "nest build",
