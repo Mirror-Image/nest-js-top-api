@@ -3,6 +3,8 @@ import { InjectModel } from 'kindagoose';
 import { TopLevelCategoryEnum, TopPageModel } from './top-page.model';
 import { ModelType } from '@typegoose/typegoose/lib/types';
 import { CreateTopPageDto } from './dto/create-top-page.dto';
+import { subDays } from 'date-fns';
+import { Types } from 'mongoose';
 
 @Injectable()
 export class TopPageService {
@@ -51,7 +53,17 @@ export class TopPageService {
 		return this.topPageModel.findByIdAndDelete(id).exec();
 	}
 
-	async updateById(id: string, dto: CreateTopPageDto) {
+	async updateById(id: string | Types.ObjectId, dto: CreateTopPageDto) {
 		return this.topPageModel.findByIdAndUpdate(id, dto, { new: true }).exec();
+	}
+
+	async findForHHUpdate(date: Date) {
+		return this.topPageModel.find({
+			firstCategory: 0,
+			$or: [
+				{ 'hh.updatedAt': { $lt: subDays(date, 1) }},
+				{ 'hh.updatedAt': { $exists: false }},
+			],
+		}).exec();
 	}
 }
