@@ -7,6 +7,7 @@ import { TopPageService } from './top-page.service';
 @Module({
   controllers: [TopPageController],
   imports: [KindagooseModule.forFeature([TopPageModel])],
-  providers: [TopPageService]
+  providers: [TopPageService],
+  exports: [TopPageService],
 })
 export class TopPageModule {}
